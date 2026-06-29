@@ -24,13 +24,11 @@ jobs:
             cd ~/uas-sentul-app
             
             if [ -d ".git" ]; then
+              git reset --hard origin/main
               git pull origin main
             else
               git clone https://github.com/${{ github.repository }}.git .
             fi
             
-            # Matikan container lama
-            docker compose -f docker-compose.yaml down --remove-orphans || true
-            
-            # Jalankan ulang container dengan port baru 8081
-            docker compose -f docker-compose.yaml up -d --build
+            # Gaya Zazhran: Langsung hantam build tanpa di-down duluan
+            docker compose up -d --build
