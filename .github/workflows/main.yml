@@ -1,0 +1,36 @@
+name: CI/CD Auto Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Deploy to VPS via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          port: 22
+          script: |
+            mkdir -p ~/uas-sentul-app
+            cd ~/uas-sentul-app
+            
+            if [ -d ".git" ]; then
+              git pull origin main
+            else
+              git clone https://github.com/${{ github.repository }}.git .
+            fi
+            
+            # Matikan container lama
+            docker compose -f docker-compose.yaml down --remove-orphans || true
+            
+            # Jalankan ulang container dengan port baru 8081
+            docker compose -f docker-compose.yaml up -d --build
