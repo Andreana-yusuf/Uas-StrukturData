@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: express_web_app
+    ports:
+      - "8081:8087"
+    restart: always
