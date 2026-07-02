@@ -27,6 +27,6 @@ jobs:
             
             git pull origin main
             
-            docker compose down --remove-orphans  # <--- Tambahkan baris ini untuk matiin yang lama
+            docker compose down --remove-orphans
             
             docker compose up -d --build
