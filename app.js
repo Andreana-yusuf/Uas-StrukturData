@@ -5,11 +5,7 @@ const PORT = 8087;
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.json({
-    status: "success",
-    message: "Selamat Dre! Web UAS lo berhasil deploy via CI/CD GitHub Actions!",
-    author: "Andreana Yusuf"
-  });
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.listen(PORT, () => {
