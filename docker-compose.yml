@@ -1,9 +1,11 @@
+version: '3.8'
+
 services:
-  web:
-    build: .
-    container_name: express_web_app
+  web-uas:
+    image: nginx:latest
+    container_name: web_uas_andreana
     ports:
-      - "8087:8081"
+      - "8087:80"
     volumes:
       - ./html:/usr/share/nginx/html
     restart: always
