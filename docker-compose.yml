@@ -10,11 +10,11 @@ services:
       - ./html:/usr/share/nginx/html
     restart: always
 
- uptime-kuma:
+  uptime-kuma:
     image: louislam/uptime-kuma:1
-    container_name: monitoring_uas_zazhran
+    container_name: monitoring_uas_andreana
     ports:
-      - "3001:3001" 
+      - "3001:3001"
     volumes:
       - uptime-kuma-data:/app/data
     restart: always
