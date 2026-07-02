@@ -22,13 +22,9 @@ jobs:
           script: |
             mkdir -p ~/uas-sentul-app
             cd ~/uas-sentul-app
+
+            git reset --hard origin/main
             
-            if [ -d ".git" ]; then
-              git reset --hard origin/main
-              git pull origin main
-            else
-              git clone https://github.com/${{ github.repository }}.git .
-            fi
+            git pull origin main
             
-            # Gaya Zazhran: Langsung hantam build tanpa di-down duluan
             docker compose up -d --build
