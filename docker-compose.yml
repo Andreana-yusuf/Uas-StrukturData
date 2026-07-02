@@ -4,4 +4,6 @@ services:
     container_name: express_web_app
     ports:
       - "8087:8081"
+    volumes:
+      - ./html:/usr/share/nginx/html
     restart: always
