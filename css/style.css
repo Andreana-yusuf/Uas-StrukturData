@@ -11,21 +11,21 @@ body {
     align-items: center;
     min-height: 100vh;
     overflow: hidden;
-    background: #0f172a;
+    /* Warna dasar body gelap agar lampu neon makin kelihatan */
+    background: #000; 
 }
 
-/* ==========================================================================
-   EFEK KELAP-KELIP DISKO PADA BACKGROUND
-   ========================================================================== */
+/* ==================================================
+   EFEK LAMPU DISKO / DUGEM PADA BACKGROUND
+   ================================================== */
 
-/* 1. Definisi Animasi Perubahan Warna Kilat */
-@keyframes kelapKelipDisko {
-    0% { background: #ff007f; }    /* Pink Neon */
-    20% { background: #00f0ff; }   /* Cyan */
-    40% { background: #7000ff; }   /* Ungu */
-    60% { background: #ffb700; }   /* Kuning */
-    80% { background: #00ff66; }   /* Hijau */
-    100% { background: #ff007f; }  /* Kembali ke Pink */
+/* 1. Definisi Perubahan Warna Neon yang Cepat */
+@keyframes dugemLampu {
+    0%, 100% { background-color: #ff00ff; box-shadow: 0 0 50px #ff00ff; } /* Pink Neon */
+    20% { background-color: #00ffff; box-shadow: 0 0 50px #00ffff; }       /* Cyan */
+    40% { background-color: #ff0000; box-shadow: 0 0 50px #ff0000; }       /* Merah */
+    60% { background-color: #00ff00; box-shadow: 0 0 50px #00ff00; }       /* Hijau Neon */
+    80% { background-color: #ffff00; box-shadow: 0 0 50px #ffff00; }       /* Kuning */
 }
 
 /* 2. Menerapkan Animasi ke Background Utama */
@@ -33,28 +33,36 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    /* Menggunakan animasi kelap-kelip selama 1 detik secara terus-menerus */
-    animation: kelapKelipDisko 1s infinite linear !important;
+    /* Menggunakan animasi 'dugemLampu' selama 0.5 detik (sangat cepat), terus-menerus */
+    animation: dugemLampu 0.5s infinite linear !important;
     z-index: -1; /* Tetap di paling belakang */
+    opacity: 0.8; /* Sedikit transparan agar tidak terlalu pusing */
 }
 
-/* ==========================================================================
-   KODE CARD UTAMA (TETAP SAMA)
-   ========================================================================== */
+/* ==================================================
+   KODE CARD UTAMA (TETAP SAMA, DIBUAT BLUR)
+   ================================================== */
 .card {
     position: relative;
     z-index: 1; /* Biar tulisan maju ke depan background */
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    /* Membuat card sedikit buram (glassmorphism) agar lampu belakang berpendar */
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 3rem;
     border-radius: 20px;
     text-align: center;
     color: white;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
     max-width: 90%;
     width: 600px;
     transform: translateY(0);
     transition: transform 0.3s ease;
+}
+
+/* Sedikit efek glow pada tombol saat di-hover */
+.card button:hover {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+    transform: scale(1.05);
 }
