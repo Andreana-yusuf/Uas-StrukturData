@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D.Mart - E-Commerce Platform</title>
+    <title>JoreMart - E-Commerce Platform</title>
     <style>
         /* ============================================================
            1. RESET & VARIABLES
@@ -174,12 +174,8 @@
         .product-img {
             width: 100%;
             height: 200px;
+            object-fit: cover;
             background-color: #eaeaea;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: var(--text-muted);
         }
 
         .product-info {
@@ -234,14 +230,9 @@
         .detail-large-img {
             width: 100%;
             height: 400px;
+            object-fit: cover;
             background-color: #eaeaea;
             border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: var(--text-muted);
-            font-weight: bold;
         }
 
         .detail-desc {
@@ -458,13 +449,43 @@
        8. ENGINE UTAMA JAVASCRIPT (SISTEM APLIKASI INTERAKTIF)
        ============================================================ */ -->
     <script>
-        // Data Produk Mock Database
+        // Data Produk Lengkap dengan Link Gambar Online Valid
         const products = [
-            { id: 1, name: "Smartphone Flagship X1", price: 8999000, desc: "Smartphone berspesifikasi tinggi dengan layar AMOLED 120Hz, chipset kelas atas, dan daya tahan baterai superior untuk produktivitas harian Anda." },
-            { id: 2, name: "Wireless Headphone Pro Neon", price: 1250000, desc: "Nikmati kedalaman audio luar biasa dengan fitur Active Noise Cancellation (ANC) dan bantalan telinga ergonomis." },
-            { id: 3, name: "Mechanical Keyboard RGB", price: 750000, desc: "Keyboard mekanikal dengan switch tactile responsif dan pencahayaan RGB kustom penuh yang cocok untuk gaming maupun mengetik cepat." },
-            { id: 4, name: "Ultra-wide Gaming Monitor 34\"", price: 4599000, desc: "Pandangan visual luas tanpa batas dengan resolusi tajam 2K dan tingkat kelengkungan yang memanjakan mata Anda." },
-            { id: 5, name: "Smartwatch Sport Active", price: 1999000, desc: "Pantau kesehatan dan aktivitas olahraga Anda setiap hari secara presisi berkat sensor detak jantung pintar." }
+            { 
+                id: 1, 
+                name: "Smartphone Flagship X1", 
+                price: 8999000, 
+                image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500",
+                desc: "Smartphone berspesifikasi tinggi dengan layar AMOLED 120Hz, chipset kelas atas, dan daya tahan baterai superior untuk produktivitas harian Anda." 
+            },
+            { 
+                id: 2, 
+                name: "Wireless Headphone Pro Neon", 
+                price: 1250000, 
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500",
+                desc: "Nikmati kedalaman audio luar biasa dengan fitur Active Noise Cancellation (ANC) dan bantalan telinga ergonomis." 
+            },
+            { 
+                id: 3, 
+                name: "Mechanical Keyboard RGB", 
+                price: 750000, 
+                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500",
+                desc: "Keyboard mekanikal dengan switch tactile responsif dan pencahayaan RGB kustom penuh yang cocok untuk gaming maupun mengetik cepat." 
+            },
+            { 
+                id: 4, 
+                name: "Ultra-wide Gaming Monitor 34\"", 
+                price: 4599000, 
+                image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500",
+                desc: "Pandangan visual luas tanpa batas dengan resolusi tajam 2K dan tingkat kelengkungan yang memanjakan mata Anda." 
+            },
+            { 
+                id: 5, 
+                name: "Smartwatch Sport Active", 
+                price: 1999000, 
+                image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500",
+                desc: "Pantau kesehatan dan aktivitas olahraga Anda setiap hari secara presisi berkat sensor detak jantung pintar." 
+            }
         ];
 
         let cart = [];
@@ -472,9 +493,7 @@
 
         // --- SISTEM ROUTER INTERNAL ---
         function navigateTo(pageId) {
-            // Sembunyikan semua halaman
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-            // Tampilkan halaman target
             document.getElementById(`${pageId}Page`).classList.add('active');
             window.scrollTo(0,0);
 
@@ -486,7 +505,7 @@
             const grid = document.getElementById('productGrid');
             grid.innerHTML = products.map(p => `
                 <div class="product-card">
-                    <div class="product-img" onclick="renderDetail(${p.id})">Foto Produk</div>
+                    <img class="product-img" src="${p.image}" alt="${p.name}" onclick="renderDetail(${p.id})">
                     <div class="product-info">
                         <div onclick="renderDetail(${p.id})">
                             <h4 class="product-title">${p.name}</h4>
@@ -504,7 +523,7 @@
             const container = document.getElementById('detailContainer');
             
             container.innerHTML = `
-                <div class="detail-large-img">Gambar Produk Spesifikasi</div>
+                <img class="detail-large-img" src="${product.image}" alt="${product.name}">
                 <div>
                     <h2>${product.name}</h2>
                     <h3 class="product-price" style="font-size: 2rem; margin: 1rem 0;">Rp ${product.price.toLocaleString('id-ID')}</h3>
@@ -517,15 +536,13 @@
 
         // --- FITUR KERANJANG & CHECKOUT ---
         function addToCart(productId, event) {
-            if(event) event.stopPropagation(); // Mencegah klik masuk ke halaman detail
+            if(event) event.stopPropagation();
             
             const product = products.find(p => p.id === productId);
             cart.push(product);
             
-            // Update counter navbar
             document.getElementById('cartCount').innerText = cart.length;
             
-            // Show toast popup
             const popup = document.getElementById('globalPopup');
             popup.style.display = 'block';
             setTimeout(() => popup.style.display = 'none', 2000);
@@ -607,7 +624,6 @@
             navigateTo('home');
         }
 
-        // Inisialisasi Pertama Kali Web Dimuat
         window.addEventListener('DOMContentLoaded', () => {
             renderHome();
         });
