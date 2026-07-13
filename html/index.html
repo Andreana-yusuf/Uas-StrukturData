@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UAS Struktur Data - Professional Digital Services</title>
+    <title>D.Mart - E-Commerce Platform</title>
     <style>
         /* ============================================================
            1. RESET & VARIABLES
@@ -12,416 +12,605 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            scroll-behavior: smooth; /* Efek smooth scroll bawaan browser */
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
         }
 
         :root {
-            --primary: #00f0ff;
-            --secondary: #7000ff;
-            --dark: #0f172a;
-            --dark-card: rgba(30, 41, 59, 0.7);
-            --text-light: #f8fafc;
-            --text-muted: #94a3b8;
+            --primary: #f94d2f; /* Orange khas E-commerce */
+            --primary-hover: #e04326;
+            --dark: #121212;
+            --light: #f5f5f5;
+            --white: #ffffff;
+            --text-main: #333333;
+            --text-muted: #888888;
+            --border: #e0e0e0;
         }
 
         body {
-            background-color: var(--dark);
-            color: var(--text-light);
-            line-height: 1.6;
-            overflow-x: hidden;
+            background-color: var(--light);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         /* ============================================================
-           2. REUSABLE COMPONENTS & SCROLL ANIMATION
+           2. NAVIGATION BAR
            ============================================================ */
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 5rem 0;
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 1rem 0;
         }
 
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .search-bar {
+            flex: 0 1 500px;
+            display: flex;
+            border: 2px solid var(--primary);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 0.6rem 1rem;
+            border: none;
+            outline: none;
+        }
+
+        .search-bar button {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0 1.5rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            color: var(--text-main);
             position: relative;
+            font-weight: 500;
         }
 
-        .section-title span {
+        .nav-btn:hover {
             color: var(--primary);
         }
 
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -12px;
+            background-color: var(--primary);
+            color: var(--white);
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 50%;
             font-weight: bold;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-            font-size: 1rem;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--dark);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 240, 255, 0.3);
-        }
-
-        /* Kelas untuk Efek Muncul saat Slide/Scroll */
-        .reveal {
-            position: relative;
-            transform: translateY(50px);
-            opacity: 0;
-            transition: all 0.8s ease;
-        }
-
-        .reveal.active {
-            transform: translateY(0);
-            opacity: 1;
         }
 
         /* ============================================================
-           3. HERO SECTION
+           3. APP PAGES (ROUTER SYSTEM VISIBILITY)
            ============================================================ */
-        .hero {
-            min-height: 80vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-            background: radial-gradient(circle at 80% 20%, rgba(112, 0, 255, 0.15) 0%, transparent 50%);
+        .page {
+            display: none;
+            padding: 2rem 0;
+            flex: 1;
         }
 
-        .hero-content {
-            max-width: 700px;
+        .page.active {
+            display: block;
         }
 
-        .hero h1 {
-            font-size: 3.5rem;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero h1 span {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
+        /* ============================================================
+           4. HOME PAGE STYLES
+           ============================================================ */
+        .hero-banner {
+            background: linear-gradient(135deg, #ff7b54, var(--primary));
+            color: var(--white);
+            padding: 3rem;
+            border-radius: 12px;
             margin-bottom: 2rem;
-        }
-
-        /* ============================================================
-           4. PRICING PLANS SECTION
-           ============================================================ */
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .price-card {
-            background: var(--dark-card);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2.5rem;
             text-align: center;
-            backdrop-filter: blur(10px);
-            transition: transform 0.3s ease, border-color 0.3s ease;
-            position: relative;
+        }
+
+        .hero-banner h2 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background-color: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
             display: flex;
             flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 200px;
+            background-color: #eaeaea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--text-muted);
+        }
+
+        .product-info {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
             justify-content: space-between;
         }
 
-        .price-card.featured {
-            border-color: var(--primary);
-            transform: scale(1.03);
+        .product-title {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
         }
 
-        .price-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--secondary);
-        }
-
-        .price-card h3 {
-            font-size: 1.5rem;
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
             margin-bottom: 1rem;
         }
 
-        .price-card .cost {
-            font-size: 2.5rem;
+        .btn-add-cart {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
             font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
+            width: 100%;
+            transition: background 0.2s;
         }
 
-        .price-card ul {
-            list-style: none;
-            margin-bottom: 2rem;
-            text-align: left;
+        .btn-add-cart:hover { background-color: var(--primary-hover); }
+
+        /* ============================================================
+           5. DETAIL PRODUCT PAGE
+           ============================================================ */
+        .detail-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            background-color: var(--white);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .detail-large-img {
+            width: 100%;
+            height: 400px;
+            background-color: #eaeaea;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
             color: var(--text-muted);
+            font-weight: bold;
         }
 
-        .price-card ul li {
-            margin-bottom: 0.8rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .price-card ul li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: var(--primary);
+        .detail-desc {
+            margin: 1.5rem 0;
+            color: var(--text-muted);
+            line-height: 1.8;
         }
 
         /* ============================================================
-           5. WORKFLOW / PROCESS SECTION
+           6. LOGIN / REGISTER PAGE
            ============================================================ */
-        .process-steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
+        .auth-card {
+            background-color: var(--white);
+            max-width: 400px;
+            margin: 4rem auto;
+            padding: 2.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
-        .step-card {
-            text-align: center;
-            padding: 2rem;
+        .auth-card h2 { margin-bottom: 1.5rem; text-align: center; }
+
+        .form-group {
+            margin-bottom: 1.2rem;
         }
 
-        .step-number {
-            width: 60px;
-            height: 60px;
-            line-height: 60px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--dark);
-            border-radius: 50%;
-            font-size: 1.5rem;
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .form-group input:focus { border-color: var(--primary); }
+
+        .auth-submit {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
             font-weight: bold;
-            margin: 0 auto 1.5rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
         }
 
-        .step-card h4 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
+        .auth-toggle {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
         }
 
-        .step-card p {
+        .auth-toggle span {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* ============================================================
+           7. CART PAGE & POPUPS
+           ============================================================ */
+        .cart-list {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cart-total-section {
+            margin-top: 2rem;
+            text-align: right;
+        }
+
+        .cart-total-price {
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        /* Popup Notification */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2e7d32;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--white);
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: auto;
+            border-top: 1px solid var(--border);
             color: var(--text-muted);
             font-size: 0.9rem;
         }
 
-        /* Modal Pop-up */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.8);
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background-color: #1e293b;
-            padding: 2.5rem;
-            border-radius: 15px;
-            text-align: center;
-            border: 1px solid var(--primary);
-            max-width: 400px;
-            width: 90%;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
-        }
-
-        .modal-content h3 {
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-
-        .modal-content p {
-            margin-bottom: 1.5rem;
-            color: var(--text-muted);
-        }
-
-        /* Responsive Breakpoints */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .hero { text-align: center; }
-            .price-card.featured { transform: scale(1); }
+            .detail-container { grid-template-columns: 1fr; gap: 1.5rem; }
+            .search-bar { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. HERO SECTION -->
-    <section class="hero">
+    <!-- STICKY HEADER / NAVBAR -->
+    <header>
+        <div class="container nav-container">
+            <a class="logo" onclick="navigateTo('home')">JoreMart</a>
+            
+            <div class="search-bar">
+                <input type="text" placeholder="Cari barang impianmu di sini...">
+                <button onclick="alert('Pencarian berfungsi!')">Cari</button>
+            </div>
+
+            <div class="nav-actions">
+                <button class="nav-btn" onclick="navigateTo('cart')">
+                    Keranjang <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="nav-btn" id="loginNavBtn" onclick="navigateTo('login')">Masuk</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- NOTIFICATION GLOBAL POPUP -->
+    <div id="globalPopup" class="popup">Produk berhasil ditambahkan!</div>
+
+    <!-- 1. HOME PAGE -->
+    <main id="homePage" class="page active container">
+        <div class="hero-banner">
+            <h2>Selamat Datang di JoreMart</h2>
+            <p>Platform Belanja Online Terpercaya & Terlengkap se-UAS Struktur Data</p>
+        </div>
+        <h3 style="margin-bottom: 1.5rem;">Rekomendasi Produk</h3>
+        <div class="product-grid" id="productGrid"></div>
+    </main>
+
+    <!-- 2. DETAIL PRODUCT PAGE -->
+    <main id="detailPage" class="page container">
+        <button class="nav-btn" onclick="navigateTo('home')" style="margin-bottom: 1.5rem;">← Kembali ke Beranda</button>
+        <div class="detail-container" id="detailContainer"></div>
+    </main>
+
+    <!-- 3. CART PAGE -->
+    <main id="cartPage" class="page container">
+        <h2 style="margin-bottom: 1.5rem;">Keranjang Belanja Anda</h2>
+        <div class="cart-list">
+            <div id="cartItemsContainer"></div>
+            <div class="cart-total-section">
+                <p style="color: var(--text-muted);">Total Pembayaran:</p>
+                <div class="cart-total-price" id="cartTotalPrice">Rp 0</div>
+                <button class="btn-add-cart" style="max-width: 250px; padding: 0.8rem;" onclick="processCheckout()">Checkout Sekarang</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- 4. LOGIN & REGISTER PAGE -->
+    <main id="loginPage" class="page container">
+        <div class="auth-card" id="authCard">
+            <h2>Masuk Ke Akun</h2>
+            <form onsubmit="handleAuth(event)">
+                <div class="form-group">
+                    <label>Email / Username</label>
+                    <input type="text" required placeholder="Masukkan email Anda">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" required placeholder="Masukkan password">
+                </div>
+                <button type="submit" class="auth-submit">Masuk</button>
+            </form>
+            <div class="auth-toggle">
+                Belum punya akun? <span onclick="toggleAuthMode(false)">Daftar Sekarang</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- GLOBAL FOOTER -->
+    <footer>
         <div class="container">
-            <div class="hero-content">
-                <h1>Jasa Pembuatan Website & <span>Aplikasi Profesional</span></h1>
-                <p>Membantu transformasi digital bisnis Anda dengan infrastruktur performa tinggi, desain modern UI/UX eksklusif, dan optimasi menyeluruh.</p>
-                <a href="#pricing" class="btn btn-primary">Lihat Penawaran</a>
-            </div>
+            <p>&copy; 2026 JoreMart Ecosystem. Operasional penuh via Docker Container & GitHub Actions.</p>
         </div>
-    </section>
-
-    <!-- 2. WORKFLOW / PROCESS SECTION -->
-    <section class="container reveal">
-        <h2 class="section-title">Proses <span>Transformasi Digital</span></h2>
-        <div class="process-steps">
-            <div class="step-card">
-                <div class="step-number">1</div>
-                <h4>Analisis Kebutuhan</h4>
-                <p>Memahami target pasar dan tantangan bisnis Anda secara mendalam.</p>
-            </div>
-            <div class="step-card">
-                <div class="step-number">2</div>
-                <h4>Desain UI/UX</h4>
-                <p>Merancang interface modern yang ramah pengguna.</p>
-            </div>
-            <div class="step-card">
-                <div class="step-number">3</div>
-                <h4>Development</h4>
-                <p>Proses coding menggunakan arsitektur teknologi terbaru.</p>
-            </div>
-            <div class="step-card">
-                <div class="step-number">4</div>
-                <h4>Rilis & Pantau</h4>
-                <p>Pengujian performa sistem sebelum website resmi diluncurkan.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 3. PRICING PLANS SECTION -->
-    <section id="pricing" class="container reveal">
-        <h2 class="section-title">Pilihan Paket <span>Investasi</span></h2>
-        <div class="pricing-grid">
-            <!-- Paket Personal -->
-            <div class="price-card">
-                <div>
-                    <h3>Personal Plan</h3>
-                    <div class="cost">IDR 850K<span style="font-size: 1rem; color: var(--text-muted)">/thn</span></div>
-                    <ul>
-                        <li>Template Standar Efisien</li>
-                        <li>Proses Cepat 3-5 Hari</li>
-                        <li>User-Friendly & Praktis</li>
-                        <li>Support Pemeliharaan Dasar</li>
-                    </ul>
-                </div>
-                <button class="btn btn-primary order-btn" data-plan="Personal Plan">Pilih Paket</button>
-            </div>
-
-            <!-- Paket UMKM (Best Seller) -->
-            <div class="price-card featured">
-                <div style="position: absolute; top: -12px; right: 20px; background: var(--secondary); padding: 2px 10px; border-radius: 10px; font-size: 0.8rem;">BEST SELLER</div>
-                <div>
-                    <h3>UMKM Plan</h3>
-                    <div class="cost">IDR 5.5M<span style="font-size: 1rem; color: var(--text-muted)">/thn</span></div>
-                    <ul>
-                        <li>Desain Premium Tailor-Made</li>
-                        <li>Integrasi Katalog Produk</li>
-                        <li>Optimasi SEO Dasar & Responsif</li>
-                        <li>Domain & Hosting Eksklusif</li>
-                    </ul>
-                </div>
-                <button class="btn btn-primary order-btn" data-plan="UMKM Plan">Pilih Paket</button>
-            </div>
-
-            <!-- Paket Business -->
-            <div class="price-card">
-                <div>
-                    <h3>Business Plan</h3>
-                    <div class="cost">Custom</div>
-                    <ul>
-                        <li>Arsitektur Enterprise Kompleks</li>
-                        <li>Skalabilitas Sistem Penuh</li>
-                        <li>Keamanan & enkripsi ketat</li>
-                        <li>Dedicated Support 24/7</li>
-                    </ul>
-                </div>
-                <button class="btn btn-primary order-btn" data-plan="Business Plan">Hubungi Kami</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Modal Pop-up Interaktif -->
-    <div id="orderModal" class="modal">
-        <div class="modal-content">
-            <h3 id="modalTitle">Konfirmasi</h3>
-            <p id="modalBody">Sistem sedang memproses pilihan Anda.</p>
-            <button class="btn btn-primary" id="closeModal">Tutup</button>
-        </div>
-    </div>
-
-    <!-- FOOTER -->
-    <footer style="text-align: center; padding: 3rem 0; color: var(--text-muted); border-top: 1px solid rgba(255,255,255,0.05)">
-        <p>&copy; 2026 Uas-StrukturData Proyek. Built with automated CI/CD and Docker VPS.</p>
     </footer>
 
     <!-- ============================================================
-       6. JAVASCRIPT ANIMASI & INTERAKSI TOMBOL
-       ============================================================ -->
+       8. ENGINE UTAMA JAVASCRIPT (SISTEM APLIKASI INTERAKTIF)
+       ============================================================ */ -->
     <script>
-        // --- 1. EFEK INTERAKTIF TOMBOL (MODAL WINDOW) ---
-        const modal = document.getElementById('orderModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalBody = document.getElementById('modalBody');
-        const closeModal = document.getElementById('closeModal');
-        const orderButtons = document.querySelectorAll('.order-btn');
+        // Data Produk Mock Database
+        const products = [
+            { id: 1, name: "Smartphone Flagship X1", price: 8999000, desc: "Smartphone berspesifikasi tinggi dengan layar AMOLED 120Hz, chipset kelas atas, dan daya tahan baterai superior untuk produktivitas harian Anda." },
+            { id: 2, name: "Wireless Headphone Pro Neon", price: 1250000, desc: "Nikmati kedalaman audio luar biasa dengan fitur Active Noise Cancellation (ANC) dan bantalan telinga ergonomis." },
+            { id: 3, name: "Mechanical Keyboard RGB", price: 750000, desc: "Keyboard mekanikal dengan switch tactile responsif dan pencahayaan RGB kustom penuh yang cocok untuk gaming maupun mengetik cepat." },
+            { id: 4, name: "Ultra-wide Gaming Monitor 34\"", price: 4599000, desc: "Pandangan visual luas tanpa batas dengan resolusi tajam 2K dan tingkat kelengkungan yang memanjakan mata Anda." },
+            { id: 5, name: "Smartwatch Sport Active", price: 1999000, desc: "Pantau kesehatan dan aktivitas olahraga Anda setiap hari secara presisi berkat sensor detak jantung pintar." }
+        ];
 
-        orderButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const planName = button.getAttribute('data-plan');
-                modalTitle.innerText = `Berhasil Memilih!`;
-                modalBody.innerText = `Terima kasih telah memilih ${planName}. Permintaan Anda sukses diproses oleh sistem Docker VPS UAS.`;
-                modal.style.display = 'flex';
-            });
-        });
+        let cart = [];
+        let isLoginMode = true;
 
-        closeModal.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
+        // --- SISTEM ROUTER INTERNAL ---
+        function navigateTo(pageId) {
+            // Sembunyikan semua halaman
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            // Tampilkan halaman target
+            document.getElementById(`${pageId}Page`).classList.add('active');
+            window.scrollTo(0,0);
 
-        window.addEventListener('click', (e) => {
-            if (e.target == modal) {
-                modal.style.display = 'none';
-            }
-        });
-
-        // --- 2. EFEK ANIMASI SAAT SLIDE / SCROLL (REVEAL ON SCROLL) ---
-        function revealOnScroll() {
-            const reveals = document.querySelectorAll('.reveal');
-            
-            reveals.forEach(element => {
-                const windowHeight = window.innerHeight;
-                const elementTop = element.getBoundingClientRect().top;
-                const elementVisible = 150; // Jarak trigger piksel sebelum elemen muncul
-                
-                if (elementTop < windowHeight - elementVisible) {
-                    element.classList.add('active');
-                } else {
-                    element.classList.remove('active'); // Hapus ini jika ingin animasinya sekali saja
-                }
-            });
+            if(pageId === 'cart') renderCart();
         }
 
-        window.addEventListener('scroll', revealOnScroll);
-        // Panggil sekali di awal jika ada elemen yang sudah masuk layar saat dimuat
-        window.addEventListener('DOMContentLoaded', revealOnScroll);
+        // --- RENDER HALAMAN UTAMA ---
+        function renderHome() {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = products.map(p => `
+                <div class="product-card">
+                    <div class="product-img" onclick="renderDetail(${p.id})">Foto Produk</div>
+                    <div class="product-info">
+                        <div onclick="renderDetail(${p.id})">
+                            <h4 class="product-title">${p.name}</h4>
+                            <p class="product-price">Rp ${p.price.toLocaleString('id-ID')}</p>
+                        </div>
+                        <button class="btn-add-cart" onclick="addToCart(${p.id}, event)">+ Keranjang</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- RENDER DETAIL PRODUK ---
+        function renderDetail(productId) {
+            const product = products.find(p => p.id === productId);
+            const container = document.getElementById('detailContainer');
+            
+            container.innerHTML = `
+                <div class="detail-large-img">Gambar Produk Spesifikasi</div>
+                <div>
+                    <h2>${product.name}</h2>
+                    <h3 class="product-price" style="font-size: 2rem; margin: 1rem 0;">Rp ${product.price.toLocaleString('id-ID')}</h3>
+                    <p class="detail-desc">${product.desc}</p>
+                    <button class="btn-add-cart" style="padding: 1rem; max-width: 300px;" onclick="addToCart(${product.id})">Masukkan Ke Keranjang Belanja</button>
+                </div>
+            `;
+            navigateTo('detail');
+        }
+
+        // --- FITUR KERANJANG & CHECKOUT ---
+        function addToCart(productId, event) {
+            if(event) event.stopPropagation(); // Mencegah klik masuk ke halaman detail
+            
+            const product = products.find(p => p.id === productId);
+            cart.push(product);
+            
+            // Update counter navbar
+            document.getElementById('cartCount').innerText = cart.length;
+            
+            // Show toast popup
+            const popup = document.getElementById('globalPopup');
+            popup.style.display = 'block';
+            setTimeout(() => popup.style.display = 'none', 2000);
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartItemsContainer');
+            const totalDisplay = document.getElementById('cartTotalPrice');
+            
+            if(cart.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 2rem;">Keranjang Anda kosong.</p>';
+                totalDisplay.innerText = "Rp 0";
+                return;
+            }
+
+            container.innerHTML = cart.map((item, idx) => `
+                <div class="cart-item">
+                    <div>
+                        <h4>${item.name}</h4>
+                        <p class="product-price" style="font-size: 1rem; margin-top: 0.2rem;">Rp ${item.price.toLocaleString('id-ID')}</p>
+                    </div>
+                    <button class="nav-btn" style="color: var(--primary);" onclick="removeFromCart(${idx})">Hapus</button>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            totalDisplay.innerText = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            document.getElementById('cartCount').innerText = cart.length;
+            renderCart();
+        }
+
+        function processCheckout() {
+            if(cart.length === 0) {
+                alert("Keranjang masih kosong, silakan pilih produk terlebih dahulu!");
+                return;
+            }
+            alert("Transaksi Berhasil! Pembelian Anda sukses diverifikasi oleh payment gateway simulasi JoreMart.");
+            cart = [];
+            document.getElementById('cartCount').innerText = 0;
+            navigateTo('home');
+        }
+
+        // --- SISTEM LOGIN & INTERAKSI AUTH ---
+        function toggleAuthMode(toLogin) {
+            isLoginMode = toLogin;
+            const card = document.getElementById('authCard');
+            if(!isLoginMode) {
+                card.innerHTML = `
+                    <h2>Daftar Akun Baru</h2>
+                    <form onsubmit="handleAuth(event)">
+                        <div class="form-group"><label>Nama Lengkap</label><input type="text" required placeholder="Masukkan nama Anda"></div>
+                        <div class="form-group"><label>Email</label><input type="email" required placeholder="Masukkan email"></div>
+                        <div class="form-group"><label>Password Baru</label><input type="password" required placeholder="Buat password keamanan"></div>
+                        <button type="submit" class="auth-submit">Daftar</button>
+                    </form>
+                    <div class="auth-toggle">Sudah punya akun? <span onclick="toggleAuthMode(true)">Masuk Di Sini</span></div>
+                `;
+            } else {
+                card.innerHTML = `
+                    <h2>Masuk Ke Akun</h2>
+                    <form onsubmit="handleAuth(event)">
+                        <div class="form-group"><label>Email / Username</label><input type="text" required placeholder="Masukkan email Anda"></div>
+                        <div class="form-group"><label>Password</label><input type="password" required placeholder="Masukkan password"></div>
+                        <button type="submit" class="auth-submit">Masuk</button>
+                    </form>
+                    <div class="auth-toggle">Belum punya akun? <span onclick="toggleAuthMode(false)">Daftar Sekarang</span></div>
+                `;
+            }
+        }
+
+        function handleAuth(event) {
+            event.preventDefault();
+            alert(isLoginMode ? "Sukses Masuk Akun!" : "Registrasi Akun Baru Berhasil!");
+            document.getElementById('loginNavBtn').innerText = "Akun Saya";
+            navigateTo('home');
+        }
+
+        // Inisialisasi Pertama Kali Web Dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            renderHome();
+        });
     </script>
 </body>
 </html>
