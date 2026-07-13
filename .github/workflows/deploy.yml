@@ -20,10 +20,9 @@ jobs:
           password: ${{ secrets.VPS_PASSWORD }}
           port: 22
           script: |
-
             mkdir -p ~/uas-sentul-app
-           cd ~/uas-sentul-app
-           git reset --hard origin/main
-           git pull origin main
-           docker rm -f monitoring_uas_andreana web_uas_andreana || true
-           docker compose up -d --build
+            cd ~/uas-sentul-app
+            git reset --hard origin/main
+            git pull origin main
+            docker rm -f monitoring_uas_andreana web_uas_andreana || true
+            docker compose up -d --build
