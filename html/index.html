@@ -13,6 +13,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            scroll-behavior: smooth; /* Efek smooth scroll bawaan browser */
         }
 
         :root {
@@ -32,7 +33,7 @@
         }
 
         /* ============================================================
-           2. REUSABLE COMPONENTS & UTILITIES
+           2. REUSABLE COMPONENTS & SCROLL ANIMATION
            ============================================================ */
         .container {
             width: 90%;
@@ -60,6 +61,8 @@
             text-decoration: none;
             transition: all 0.3s ease;
             cursor: pointer;
+            border: none;
+            font-size: 1rem;
         }
 
         .btn-primary {
@@ -70,6 +73,19 @@
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(0, 240, 255, 0.3);
+        }
+
+        /* Kelas untuk Efek Muncul saat Slide/Scroll */
+        .reveal {
+            position: relative;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            transform: translateY(0);
+            opacity: 1;
         }
 
         /* ============================================================
@@ -123,6 +139,9 @@
             backdrop-filter: blur(10px);
             transition: transform 0.3s ease, border-color 0.3s ease;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .price-card.featured {
@@ -203,6 +222,42 @@
             font-size: 0.9rem;
         }
 
+        /* Modal Pop-up */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: #1e293b;
+            padding: 2.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid var(--primary);
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+        }
+
+        .modal-content h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .modal-content p {
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+        }
+
         /* Responsive Breakpoints */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
@@ -225,7 +280,7 @@
     </section>
 
     <!-- 2. WORKFLOW / PROCESS SECTION -->
-    <section class="container">
+    <section class="container reveal">
         <h2 class="section-title">Proses <span>Transformasi Digital</span></h2>
         <div class="process-steps">
             <div class="step-card">
@@ -252,55 +307,121 @@
     </section>
 
     <!-- 3. PRICING PLANS SECTION -->
-    <section id="pricing" class="container">
+    <section id="pricing" class="container reveal">
         <h2 class="section-title">Pilihan Paket <span>Investasi</span></h2>
         <div class="pricing-grid">
             <!-- Paket Personal -->
             <div class="price-card">
-                <h3>Personal Plan</h3>
-                <div class="cost">IDR 850K<span style="font-size: 1rem; color: var(--text-muted)">/thn</span></div>
-                <ul>
-                    <li>Template Standar Efisien</li>
-                    <li>Proses Cepat 3-5 Hari</li>
-                    <li>User-Friendly & Praktis</li>
-                    <li>Support Pemeliharaan Dasar</li>
-                </ul>
-                <button class="btn btn-primary" onclick="alert('Terima kasih! Anda memilih Personal Plan.')">Pilih Paket</button>
+                <div>
+                    <h3>Personal Plan</h3>
+                    <div class="cost">IDR 850K<span style="font-size: 1rem; color: var(--text-muted)">/thn</span></div>
+                    <ul>
+                        <li>Template Standar Efisien</li>
+                        <li>Proses Cepat 3-5 Hari</li>
+                        <li>User-Friendly & Praktis</li>
+                        <li>Support Pemeliharaan Dasar</li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary order-btn" data-plan="Personal Plan">Pilih Paket</button>
             </div>
 
             <!-- Paket UMKM (Best Seller) -->
             <div class="price-card featured">
                 <div style="position: absolute; top: -12px; right: 20px; background: var(--secondary); padding: 2px 10px; border-radius: 10px; font-size: 0.8rem;">BEST SELLER</div>
-                <h3>UMKM Plan</h3>
-                <div class="cost">IDR 5.5M<span style="font-size: 1rem; color: var(--text-muted)">/thn</span></div>
-                <ul>
-                    <li>Desain Premium Tailor-Made</li>
-                    <li>Integrasi Katalog Produk</li>
-                    <li>Optimasi SEO Dasar & Responsif</li>
-                    <li>Domain & Hosting Eksklusif</li>
-                </ul>
-                <button class="btn btn-primary" onclick="alert('Terima kasih! Anda memilih UMKM Plan.')">Pilih Paket</button>
+                <div>
+                    <h3>UMKM Plan</h3>
+                    <div class="cost">IDR 5.5M<span style="font-size: 1rem; color: var(--text-muted)">/thn</span></div>
+                    <ul>
+                        <li>Desain Premium Tailor-Made</li>
+                        <li>Integrasi Katalog Produk</li>
+                        <li>Optimasi SEO Dasar & Responsif</li>
+                        <li>Domain & Hosting Eksklusif</li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary order-btn" data-plan="UMKM Plan">Pilih Paket</button>
             </div>
 
             <!-- Paket Business -->
             <div class="price-card">
-                <h3>Business Plan</h3>
-                <div class="cost">Custom</div>
-                <ul>
-                    <li>Arsitektur Enterprise Kompleks</li>
-                    <li>Skalabilitas Sistem Penuh</li>
-                    <li>Keamanan & enkripsi ketat</li>
-                    <li>Dedicated Support 24/7</li>
-                </ul>
-                <button class="btn btn-primary" onclick="alert('Hubungi kami untuk konsultasi Business Plan.')">Hubungi Kami</button>
+                <div>
+                    <h3>Business Plan</h3>
+                    <div class="cost">Custom</div>
+                    <ul>
+                        <li>Arsitektur Enterprise Kompleks</li>
+                        <li>Skalabilitas Sistem Penuh</li>
+                        <li>Keamanan & enkripsi ketat</li>
+                        <li>Dedicated Support 24/7</li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary order-btn" data-plan="Business Plan">Hubungi Kami</button>
             </div>
         </div>
     </section>
+
+    <!-- Modal Pop-up Interaktif -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <h3 id="modalTitle">Konfirmasi</h3>
+            <p id="modalBody">Sistem sedang memproses pilihan Anda.</p>
+            <button class="btn btn-primary" id="closeModal">Tutup</button>
+        </div>
+    </div>
 
     <!-- FOOTER -->
     <footer style="text-align: center; padding: 3rem 0; color: var(--text-muted); border-top: 1px solid rgba(255,255,255,0.05)">
         <p>&copy; 2026 Uas-StrukturData Proyek. Built with automated CI/CD and Docker VPS.</p>
     </footer>
 
+    <!-- ============================================================
+       6. JAVASCRIPT ANIMASI & INTERAKSI TOMBOL
+       ============================================================ -->
+    <script>
+        // --- 1. EFEK INTERAKTIF TOMBOL (MODAL WINDOW) ---
+        const modal = document.getElementById('orderModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const closeModal = document.getElementById('closeModal');
+        const orderButtons = document.querySelectorAll('.order-btn');
+
+        orderButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const planName = button.getAttribute('data-plan');
+                modalTitle.innerText = `Berhasil Memilih!`;
+                modalBody.innerText = `Terima kasih telah memilih ${planName}. Permintaan Anda sukses diproses oleh sistem Docker VPS UAS.`;
+                modal.style.display = 'flex';
+            });
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target == modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // --- 2. EFEK ANIMASI SAAT SLIDE / SCROLL (REVEAL ON SCROLL) ---
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            reveals.forEach(element => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150; // Jarak trigger piksel sebelum elemen muncul
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                } else {
+                    element.classList.remove('active'); // Hapus ini jika ingin animasinya sekali saja
+                }
+            });
+        }
+
+        window.addEventListener('scroll', revealOnScroll);
+        // Panggil sekali di awal jika ada elemen yang sudah masuk layar saat dimuat
+        window.addEventListener('DOMContentLoaded', revealOnScroll);
+    </script>
 </body>
 </html>
